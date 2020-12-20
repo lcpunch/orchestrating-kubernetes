@@ -1,0 +1,58 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - ./infra/k8s/*
+build:
+  local:
+    push: false
+  artifacts:
+    - image: lcpunch/client
+      context: client
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.js'
+            dest: .
+    - image: lcpunch/comments
+      context: comments
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: lcpunch/event-bus
+      context: event-bus
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: lcpunch/moderation
+      context: moderation
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: lcpunch/posts
+      context: posts
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
+    - image: lcpunch/query
+      context: query
+      docker:
+        dockerfile: dockerfile
+      sync:
+        manual:
+          - src: '*.js'
+            dest: .
